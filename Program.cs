@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Text;
 using System.IO;
 using System.Timers;
 using System.IO.Pipes;
-
-namespace Timer
+/*to do: 하루에 몇시간 하는 지 log 남기는 코드 짜기*/
+namespace _100HperWeekTimer
 {
     public static class Program
     {
@@ -19,6 +19,7 @@ namespace Timer
         {
             string[] lines;
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
+            DailyLogger.init();
             /*시간 양식
             날짜 (일주일 지났는지 체크용)
             남은 시간 (초단위)
@@ -70,6 +71,7 @@ namespace Timer
                 temp = Encoding.UTF8.GetBytes(restTime.ToString() + "\n");
                 fileStream.Write(temp, 0, temp.Length);
             }
+            DailyLogger.dispose();
         }
         private static void SetTimer()
         {
@@ -80,6 +82,7 @@ namespace Timer
         }
         private static void OnTimedEvent(Object Source, ElapsedEventArgs e)
         {
+            DailyLogger.increasePassedTime();
             if (restTime-- == 0)
             {
                 restTime++;
