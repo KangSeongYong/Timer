@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,7 +17,6 @@ namespace _100HperWeekTimer
         private const int LINELENGTH = -45;
         private const int INITIALCAPACITY = 64;
         private static uint passedTime = 0;
-        private static string[] lines = null; 
         private static readonly string directory = Directory.GetCurrentDirectory() + "\\log.txt";
         private static readonly char[] seperator = { '|'};
         private static readonly char[] dateSeperator = { '/', ' ' };
@@ -25,7 +24,7 @@ namespace _100HperWeekTimer
         {
             if (File.Exists(directory))
             {
-                lines = File.ReadAllLines(directory);
+                string[] lines = File.ReadAllLines(directory);
                 //마지막 줄을 그냥 읽어온다고 생각
                 string[] strings = lines[lines.Length - 1].Split(seperator);
                 string[] strings1 = strings[0].Split(dateSeperator);
@@ -43,16 +42,9 @@ namespace _100HperWeekTimer
         }
         public static void dispose()
         {
-            using (FileStream fileStream = File.Open(directory, FileMode.Open))
+            using (FileStream fileStream = File.Open(directory, FileMode.Append))
             {
                 byte[] temp;
-                if (lines != null)
-                {
-                    for (int i = 0; i < lines.Length; ++i)
-                    {
-                        temp = Encoding.UTF8.GetBytes(lines[i] + "\n");
-                    }
-                }
                 temp = Encoding.UTF8.GetBytes(DateTime.Today.ToString() + seperator[0]);
                 fileStream.Write(temp, 0, temp.Length);
                 StringBuilder stringBuilder = new StringBuilder();
